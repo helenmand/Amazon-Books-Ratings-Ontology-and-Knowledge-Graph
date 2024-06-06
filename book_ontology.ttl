@@ -1,0 +1,82 @@
+@prefix : <http://www.semanticweb.org/ontologies/2024/bookontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix schema: <http://schema.org/> .
+@prefix bibo: <http://purl.org/ontology/bibo/> .
+
+@base <http://www.semanticweb.org/ontologies/2024/bookontology> .
+
+
+<http://www.semanticweb.org/ontologies/2024/bookontology> rdf:type owl:Ontology .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  hasRated
+:hasRated rdf:type owl:ObjectProperty ;
+          rdfs:domain :Users ;
+          rdfs:range :Ratings .
+
+###  ratesBook
+:ratesBook rdf:type owl:ObjectProperty ;
+           rdfs:domain :Ratings ;
+           rdfs:range :Books .
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  ISBN
+:ISBN rdf:type owl:DatatypeProperty ;
+      rdfs:domain :Books ;
+      rdfs:range xsd:string .
+
+###  Book-Title
+:Book-Title rdf:type owl:DatatypeProperty ;
+           rdfs:domain :Books ;
+           rdfs:range xsd:string .
+
+###  Year-Of-Publication
+:Year-Of-Publication rdf:type owl:DatatypeProperty ;
+                 rdfs:domain :Books ;
+                 rdfs:range xsd:gYear .
+
+###  ratingValue
+:ratingValue rdf:type owl:DatatypeProperty ;
+             rdfs:domain :Ratings ;
+             rdfs:range xsd:int .
+
+###  Location
+:Location rdf:type owl:DatatypeProperty ;
+              rdfs:domain :Users ;
+              rdfs:range xsd:string .
+
+###  writtenBy
+:writtenBy rdf:type owl:DatatypeProperty ;
+         rdfs:domain :Author ;
+         rdfs:range xsd:string .
+
+### Age
+:Age rdf:type owl:DatatypeProperty
+      rdfs:domain :Users ;
+      rdfs:range xsd:int;
+
+#################################################################
+#    Classes
+#################################################################
+
+###  Book
+:Books rdf:type owl:Class .
+:Books owl:equivalentClass bibo:Book .
+
+###  User
+:Users rdf:type owl:Class .
+
+###  Rating
+:Ratings rdf:type owl:Class .

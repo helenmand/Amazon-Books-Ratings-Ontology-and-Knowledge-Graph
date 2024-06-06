@@ -1,0 +1,95 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#>.
+@prefix rml: <http://semweb.mmlab.be/ns/rml#>.
+@prefix ql: <http://semweb.mmlab.be/ns/ql#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix schema: <http://schema.org/> .
+@prefix dc: <http://purl.org/dc/terms/>.
+@prefix ex: <http://www.semanticweb.org/ontologies/2024/bookontology#>.
+@prefix bibo: <http://purl.org/ontology/bibo/>.
+
+# Base URLs for different types of entities
+@base <http://books.example.com/data/>.
+@base <http://users.example.com/data/>.
+@base <http://ratings.example.com/data/>.
+
+<#BooksMapping> a rr:TriplesMap;
+  rml:logicalSource [
+    rml:source "books_data/books.csv";
+    rml:referenceFormulation ql:CSV
+  ];
+  rr:subjectMap [
+    rr:template "http://books.example.com/data/{ISBN}";
+    rr:class bibo:Book
+  ];
+  rr:predicateObjectMap [
+    rr:predicate bibo:isbn;
+    rr:objectMap [ rml:reference "ISBN" ]
+  ];
+  rr:predicateObjectMap [
+    rr:predicate dc:title;
+    rr:objectMap [ rml:reference "Book-Title" ]
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:publicationYear;
+    rr:objectMap [
+      rml:reference "Year-Of-Publication";
+      rr:datatype xsd:gYear
+    ]
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:writtenBy;
+    rr:objectMap [
+      rr:template "http://authors.example.com/data/{Book-Author}"
+    ]
+  ].
+
+<#UsersMapping> a rr:TriplesMap;
+  rml:logicalSource [
+    rml:source "books_data/users.csv";
+    rml:referenceFormulation ql:CSV
+  ];
+  rr:subjectMap [
+    rr:template "http://users.example.com/data/{User-ID}";
+    rr:class ex:Users
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:userLocation;
+    rr:objectMap [ rml:reference "Location" ]
+  ];
+  rr:predicateObjectMap [
+    rr:predicate schema:age;
+    rr:objectMap [
+      rml:reference "Age";
+      rr:datatype xsd:int
+    ]
+  ].
+
+<#RatingsMapping> a rr:TriplesMap;
+  rml:logicalSource [
+    rml:source "books_data/ratings.csv";
+    rml:referenceFormulation ql:CSV
+  ];
+  rr:subjectMap [
+    rr:template "http://ratings.example.com/data/{User-ID}_{ISBN}";
+    rr:class ex:Ratings
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:hasRated;
+    rr:objectMap [
+      rr:template "http://users.example.com/data/{User-ID}"
+    ]
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:ratesBook;
+    rr:objectMap [
+      rr:template "http://books.example.com/data/{ISBN}"
+    ]
+  ];
+  rr:predicateObjectMap [
+    rr:predicate ex:ratingValue;
+    rr:objectMap [
+      rml:reference "Book-Rating";
+      rr:datatype xsd:int
+    ]
+  ].
